@@ -532,7 +532,7 @@ def select_random_users_seeded(users, count=1, seed=None, exclude=None):
 def format_aura_leaderboard(leaderboard_data, chat_title=None):
     """Format aura leaderboard message with IShowSpeed energy."""
     if not leaderboard_data:
-        return "🔥 <b>AURA LEADERBOARD</b> 🔥\n\n💀 Yo Chat Is Dead... ZERO AURA Detected! SPEED'S Disappointed. Go Touch Grass And Come Back STRONGER 😭💀""
+        return "🔥 <b>AURA LEADERBOARD</b> 🔥\n\n💀 Yo Chat Is Dead... ZERO AURA Detected! SPEED'S Disappointed. Go Touch Grass And Come Back STRONGER 😭💀"
 
     title = "🏃‍♂️ <b>SIGMA LEADERBOARD</b> 🏃‍♂️"
     if chat_title:

@@ -1145,7 +1145,7 @@ async def ping_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     end_time = time.time()
     response_time = round((end_time - start_time) * 1000, 2)
     await update.message.reply_text(
-        f"⚡ <a href="{SUPPORT_GROUP}">BOOM!</a> {response_time}ms",
+        f'⚡ <a href="{SUPPORT_GROUP}">BOOM!</a> {response_time}ms',
         parse_mode=ParseMode.HTML
     )
 

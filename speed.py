@@ -24,131 +24,126 @@ from telegram.ext import (
     ContextTypes,
 )
 
-# ─── SPEED'S HTTP SERVER IMPORTS - KEEPING THE GRIND ALIVE! ──────────────────
 import threading
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
-# Configure logging - SPEED'S LOGGING SYSTEM! 🔥
+# Configure logging
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO
 )
 logger = logging.getLogger(__name__)
 
-# SPEED'S BOT CONFIGURATION - W SETUP! 💯
+# Bot configuration
 BOT_TOKEN = os.getenv("BOT_TOKEN", "your_bot_token_here")
-OWNER_ID = 5290407067  # SPEED'S OWNER ID - RESPECT THE GRIND! 👑
+OWNER_ID = 5290407067
 
-# SPEED'S OFFICIAL CHANNELS - JOIN THE SPEED NATION! 🚀
+# Official channels
 UPDATES_CHANNEL = "https://t.me/WorkGlows"
 SUPPORT_GROUP = "https://t.me/TheCryptoElders"
-BOT_USERNAME = None  # SPEED'S USERNAME - WILL BE SET DYNAMICALLY! ⚡
+BOT_USERNAME = None
 
-# SPEED'S BROADCAST MODE - W ANNOUNCEMENT SYSTEM! 📢
+# Broadcast system
 broadcast_mode = set()
 broadcast_target = {}
 
-# SPEED'S AURA POINTS SYSTEM - THE GRIND NEVER STOPS! ⚡💯
+# Aura points system
 AURA_POINTS = {
-    'gay': -100,        # L ENERGY! 😭
-    'couple': 100,      # W RELATIONSHIP GRIND! 💑
-    'simp': -100,       # L BEHAVIOR! 🤡
-    'toxic': -100,      # L VIBES! ☠️
-    'cringe': -100,     # L CONTENT! 🤢
-    'respect': 500,     # MASSIVE W! 👑
-    'sus': -100,        # L IMPOSTOR! 📮
-    'ghost': -200,      # BIGGEST L! 👻
+    'gay': -100,
+    'couple': 100,
+    'simp': -100,
+    'toxic': -100,
+    'cringe': -100,
+    'respect': 500,
+    'sus': -100,
+    'ghost': -200,
 }
 
-# SPEED'S LEGENDARY COMMAND MESSAGES - CHAT IS THIS REAL?! 🔥💯
+# Command messages for different actions
 COMMAND_MESSAGES = {
     'gay': [
-        "🏳️‍🌈 Yooo {user} got picked! Who did this to my boy?! 😭🔥",
-        "💅 {user} just dropped the 'I love men' update... respectfully 💀",
-        "🏳️‍🌈 Chat chat chat! {user} is the rainbow king today! W or L?! 🔥",
-        "🌈 Breaking news: {user} just got added to LGBTQIA+ speedrun leaderboards 💀",
-        "💀 {user} said 'no homo'... but the homies ain't buying it 😭",
-        "⚡️ {user} just unlocked the ✨ fruity aura ✨. Speed is proud... kinda."
+        "🏳️‍🌈 NAHHHH {user} just dropped the GAY BOMB mid-chat 😭🔥 Bro fruity as HELL 💀",
+        "💅 Yo chat, {user} switched sides like it’s Fortnite teams 😭🌈 Real zesty activities going on 😩",
+        "🌈 AYYOOO! {user} said 'he fine asl' out loud... that’s GAY as hell LMAO 😭🔥",
+        "⚡️ Who let {user} equip the glitter rizz?! GAY ENERGY DETECTED 💀💀",
+        "💀 Chat! {user} out here fruity walkin' like he in a pride parade everyday 😭",
+        "👀 {user} got the rainbow aura maxed out... whole vibe fruity af 🏳️‍🌈💅"
     ],
     'couple': [
-        "💕 Everyone’s single except {user1} & {user2} flexing hard 💑",
-        "❤️ {user1} + {user2} = today’s cringe love story 🥰",
-        "👫 BRO {user1} and {user2} are cringe! But Speed respects the grind 🔥💑",
-        "💘 Ughhh, {user1} and {user2} making the chat look single AF 💀",
-        "😩 {user1} called {user2} 'babe' in public... chat how we feeling?",
-        "💍 Speed just shipped {user1} & {user2}. Wedding when?! 💒"
-    ],
+    "💑 UGLY ASS COUPLE ALERT 😭 {user1} & {user2} tryna act like anime lovebirds 💀 somebody break 'em up!",
+    "❤️ These two clowns {user1} and {user2} just dropped a COUPLE post like anybody asked 💀 nobody care bruh 😭",
+    "💘 AIN’T NO WAY {user1} called {user2} ‘pookie bear’ in public... internet over, go home 💀",
+    "💕 Chat! COUPLE energy from {user1} and {user2} OD right now... got me gaggin 😩💀",
+    "💍 Yo {user1}, blink twice if {user2} holdin’ you hostage with them long ass love quotes 😭🔥",
+    "😩 COUPLE-ass vibes detected — {user1} out here soft-smiling at {user2} like a Hallmark movie 😭💔"
+	],
     'simp': [
-        "🥺 Yo {user} donated his whole bank account! Speed is disappointed 😭💸",
-        "😍 {user} said 'hey queen' and lost all dignity 💀",
-        "👑 Speed caught {user} simping in 4K! Where's the self-respect?! 🤡",
-        "😩 {user} liked every story she posted... even the quotes 💀",
-        "📱 {user} replied to her 'hi' story with 'ily'... chat how down bad is that?",
-        "😭 {user} just got friendzoned live. Moment of silence 💔"
-    ],
+    "💸 SIMP OF THE YEAR goes to {user} — bruh dropped 50 bucks just to say 'good night queen' 😭😭😭 down bad as hell!",
+    "👑 LMAOOOO {user} typed ‘you deserve better’ under her thirst trap... SIT YO SIMP ASS DOWN 💀 clown behavior fr",
+    "📱 {user} in SIMP mode so hard he clapped when she posted her dog 💀 bruh ain't even her man 😭",
+    "😩 {user} simpin at LEVEL 1000 — said ‘ily’ after she replied 'k' 💀 GET HELP 😭",
+    "😭 {user} got friendzoned last week and STILL simpin... bro got no survival instinct 💔",
+    "🤡 Chat! {user} watched her 8-min makeup tutorial and commented ‘u slayed queen’... ELITE SIMP ENERGY 😭💀"
+	],
     'toxic': [
-        "☠️ Yo {user} woke up and chose violence. Speed is scared 😨💀",
-        "🧪 {user} is more toxic than Speed’s chat... and that’s saying A LOT ☣️🔥",
-        "💀 Chat chat! {user} is a menace to society. Call the police 🚨",
-        "😡 {user} just ratio’d someone IRL. Speed can't believe it 😭",
-        "🤬 {user} roasted a baby... BRO WHAT?! 💀",
-        "☢️ Radioactive energy detected from {user}. Full-on villain arc."
-    ],
+    "☠️ AYYOO {user} on full TOXIC timing — violated someone’s whole existence in 3 damn words 😭🔥",
+    "🧪 {user} TOXIC as hell! Ratio’d a kid AND flamed the mod in the same breath 💀 menace behavior",
+    "💀 Chat, {user} got that ‘don’t talk to me unless you wanna cry’ aura… full-on VILLAIN VIBES 😭",
+    "😡 TOXIC MODE: ACTIVATED. {user} flamed someone’s mom and called it ‘character growth’ 💀💀",
+    "🔥 {user} built like a final boss — straight TOXIC RAGE 24/7, no cooldown 😭💢",
+    "🚨 {user} banned HIMSELF from the groupchat just to roast everyone from the outside 😭💀 certified hater"
+	],
     'cringe': [
-        "😬 Yo {user} just made Speed cringe... and that’s impossible 💀🤡",
-        "🤢 {user} is more cringe than Speed’s hairline... OHHHH! 😭🔥",
-        "💀 Chat! {user} embarrassed the entire human race. Speed can't watch 🙈",
-        "📉 {user} said 'she's my world'... chat how down BAD is this man?",
-        "🎤 {user} just rizzed with 'are you from heaven?'... Speed leaving the chat 💀",
-        "🤮 {user} posted 'good vibes only' with a mirror selfie... make it stop."
-    ],
+    "😬 Bro... {user} just posted 'good vibes only' with a mirror selfie… that CRINGE physically hurt me 💀 delete that shit",
+    "🤢 {user} tried to drop RIZZ with ‘did it hurt when you fell from heaven?’… CRINGE OVERLOAD 🤮 CHAT I’M GONE 😭",
+    "💀 Peak CRINGE unlocked — {user} made a TikTok dancing to a slow song lookin like a brick 😭 what was that bro",
+    "📉 {user} typed ‘she my whole world’ after 2 days of texting… EL CRINGE RIZZ detected 💀",
+    "🎤 Yo chat! {user} sent a voice note with that fake deep voice tryna be sexy… CRINGE IN 4K 😩",
+    "🤮 {user} out here droppin fake deep quotes like ‘pain changes people’ with a tear filter… CRINGE KING 😭💀"
+	],
     'respect': [
-        "🫡 Yo {user} is a GOAT! Speed respects the grind! W human! 👑🔥",
-        "🙏 {user} got that sigma energy. Speed taking notes 💫💯",
-        "👑 Chat! {user} is the real deal. Speed bows down! WWWWW ✨🔥",
-        "🎖️ Salute to {user} for being built different. Certified W",
-        "🔥 {user} just dropped a power move. Aura upgraded instantly 💯",
-        "🧠 {user} said nothing but made the whole room listen. True sigma."
+        "🫡 REAL ONE ALERT 🔥 {user} just did something no man has ever done before — I RESPECT IT 😤",
+        "🙏 Bro moved SILENT but deadly... RESPECT the sigma grind {user} 💯",
+        "👑 W MAN W MAN W MAN! {user} walked in and the room saluted 😤🔥",
+        "🔥 RESPECT to the homie. {user} dropped a move so smooth it gave me goosebumps 😩",
+        "🎖️ That wasn’t luck, that was STRATEGY. RESPECT the hustle {user} 💪",
+        "💫 Chat, {user} pulled the most GIGACHAD thing ever. RESPECT where it’s due 💥"
     ],
     'sus': [
-        "📮 Yo {user} acting mad sus today... Speed sees everything 👀🔥",
-        "🤔 {user} vented in front of Speed. That’s suspicious bro 📮💀",
-        "👀 Emergency meeting! {user} is the impostor. No cap 🚨🔥",
-        "🧍 {user} was alone with the aura bot... sus activity detected 😶",
-        "📸 {user} liked a 3-year-old pic at 3 AM... SPEED IS WATCHING 👀",
-        "🔍 Suspicion level 9000. {user} ain't slick."
-    ],
+    "📮 {user} bein mad SUS today... liked his homie’s mirror selfie and commented 'cute af' 😭 NAHHHH WHAT?!",
+    "🤔 Chat... {user} moaned mid-lobby and said ‘my bad’... SUS LEVEL 9000 😭💀",
+    "👀 {user} got that ‘might kiss the homies goodnight’ vibe rn... BRO BE SERIOUS 💀",
+    "🧍 SUS VIBES DETECTED. {user} been biting his lip in every pic like he on Demon Time 😭",
+    "📸 Chat! {user} whispered 'ayo daddy' to the bot then muted... FULL SUS MODE ACTIVATED 💀💀",
+    "🔍 {user} said ‘homies can cuddle too’ with a straight face… GET HIM OUTTA HERE 😭 SUS KING"
+	],
     'ghost': [
-        "👻 Yo {user} disappeared like Speed’s hairline! Where you at bro?! 💀😭",
-        "🌙 {user} lurking like a creep... Speed calling you out! 👻🔥",
-        "💀 {user} vanished! Even Speed’s dad came back faster! OHHHH! 🌑💀",
-        "🕵️‍♂️ We got ghosted by {user}. Group chat is in shambles 💔",
-        "📉 Aura dropped to zero. {user} hasn’t been seen in 84 years 😔",
-        "📴 Offline, invisible, dead? {user} is in ghost mode for real."
+        "👻 Where TF is {user}? GHOSTED us like we owed him money 😭💀",
+        "🌙 Bro hit us with that Casper energy. {user} straight GHOST since last week 💀",
+        "💀 {user} disappeared harder than my grades mid-semester 😭",
+        "🕵️‍♂️ We tryna summon {user} like he a damn spirit. GHOST MODE 9000 💀",
+        "📉 {user} aura dropped to zero. GHOSTED chat, GHOSTED life 😩",
+        "📴 Nahhhh {user} went GHOST and didn't even say bye... fake friend vibes 😭💔"
     ]
 }
 
-# SPEED'S TIMEZONE - BANGLADESH TIME! 🇧🇩
+# Timezone configuration
 BANGLADESH_TZ = 'Asia/Dhaka'
 
-# SPEED'S MEMBER COLLECTION SYSTEM - GOTTA CATCH 'EM ALL! 🎯
+# Member collection settings
 COLLECT_MEMBERS_ON_JOIN = True
 COLLECT_MEMBERS_ON_MESSAGE = True
-MAX_MEMBERS_PER_BATCH = 200  # SPEED'S TELEGRAM API LIMIT! ⚡
+MAX_MEMBERS_PER_BATCH = 200
 
-# SPEED'S DATABASE PATH - WHERE THE MAGIC HAPPENS! 💾
+# Database configuration
 DATABASE_PATH = os.getenv("DATABASE_PATH", "speed_aura_bot.db")
 
-# ─────────────────────────────────────────────────────────────────────
-# SPEED'S DATABASE LAYER - THE FOUNDATION OF THE GRIND! 💯⚡
-# ─────────────────────────────────────────────────────────────────────
-
-# SPEED'S THREAD-LOCAL STORAGE - LIGHTNING FAST CONNECTIONS! ⚡
+# Database layer
 local_data = threading.local()
 
 @contextmanager
 def get_db_connection():
-    """SPEED'S DATABASE CONNECTION - GET THAT SQLITE3 GRIND! 💾"""
+    """Get database connection with proper error handling"""
     if not hasattr(local_data, 'conn'):
         local_data.conn = sqlite3.connect(DATABASE_PATH, check_same_thread=False)
         local_data.conn.row_factory = sqlite3.Row
@@ -160,11 +155,11 @@ def get_db_connection():
         raise e
 
 def init_database():
-    """SPEED'S DATABASE INITIALIZATION - SETTING UP THE AURA TABLES! 💯"""
+    """Initialize database tables"""
     with get_db_connection() as conn:
         cursor = conn.cursor()
 
-        # SPEED'S USERS TABLE - WHERE THE LEGENDS ARE STORED! 👑
+        # Users table
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS users (
                 user_id INTEGER PRIMARY KEY,
@@ -180,7 +175,7 @@ def init_database():
             );
         """)
 
-        # SPEED'S CHAT MEMBERS TABLE - THE SQUAD REGISTRY! 👥
+        # Chat members table
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS chat_members (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -194,7 +189,7 @@ def init_database():
             );
         """)
 
-        # SPEED'S COMMAND USAGE TABLE - TRACKING THE GRIND! 📊
+        # Command usage table
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS command_usage (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -208,7 +203,7 @@ def init_database():
             );
         """)
 
-        # SPEED'S DAILY SELECTIONS TABLE - THE CHOSEN ONES! 🎯
+        # Daily selections table
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS daily_selections (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -226,16 +221,14 @@ def init_database():
         logger.info("SPEED'S DATABASE INITIALIZED SUCCESSFULLY! W SETUP! 💯")
 
 def add_or_update_user(user_id, username=None, first_name=None, last_name=None, is_bot=False, language_code=None):
-    """SPEED'S USER TRACKER - COLLECTING THAT SIGMA DATA! 💾"""
+    """Add or update user in database"""
     with get_db_connection() as conn:
         cursor = conn.cursor()
         
-        # SPEED'S USER EXISTENCE CHECK! 🔍
         cursor.execute("SELECT aura_points, message_count FROM users WHERE user_id = ?", (user_id,))
         existing_user = cursor.fetchone()
         
         if existing_user:
-            # SPEED'S USER UPDATE - KEEPING DATA FRESH! 🔄
             cursor.execute("""
                 UPDATE users SET
                     username = ?,
@@ -248,7 +241,6 @@ def add_or_update_user(user_id, username=None, first_name=None, last_name=None, 
                 WHERE user_id = ?
             """, (username, first_name, last_name, is_bot, language_code, user_id))
         else:
-            # SPEED'S NEW USER REGISTRATION - WELCOME TO THE SQUAD! 🎉
             cursor.execute("""
                 INSERT INTO users (
                     user_id, username, first_name, last_name, is_bot, language_code,
@@ -260,7 +252,7 @@ def add_or_update_user(user_id, username=None, first_name=None, last_name=None, 
         conn.commit()
 
 def add_chat_member(chat_id, user_id, status='member'):
-    """SPEED'S CHAT MEMBER TRACKER - ADDING TO THE SQUAD! 👥"""
+    """Add or update chat member"""
     with get_db_connection() as conn:
         cursor = conn.cursor()
         cursor.execute("""
@@ -272,7 +264,7 @@ def add_chat_member(chat_id, user_id, status='member'):
         conn.commit()
 
 def update_member_activity(chat_id, user_id):
-    """SPEED'S ACTIVITY TRACKER - MONITORING THE GRIND! 📊"""
+    """Update member activity timestamp"""
     with get_db_connection() as conn:
         cursor = conn.cursor()
         cursor.execute("""
@@ -287,7 +279,7 @@ def update_member_activity(chat_id, user_id):
         conn.commit()
 
 def update_aura_points(user_id, points):
-    """SPEED'S AURA UPDATER - CHANGING THE SIGMA LEVELS! ⚡"""
+    """Update user aura points"""
     with get_db_connection() as conn:
         cursor = conn.cursor()
         cursor.execute("""
@@ -296,7 +288,7 @@ def update_aura_points(user_id, points):
         conn.commit()
 
 def can_use_command(user_id, chat_id, command):
-    """SPEED'S COOLDOWN CHECKER - RESPECTING THE LIMITS! ⏰"""
+    """Check if user can use command (cooldown system)"""
     with get_db_connection() as conn:
         cursor = conn.cursor()
         today = date.today().isoformat()
@@ -316,7 +308,7 @@ def can_use_command(user_id, chat_id, command):
         return True, 'allowed'
 
 def mark_command_used(user_id, chat_id, command):
-    """SPEED'S USAGE TRACKER - MARKING THE GRIND! 📝"""
+    """Mark command as used for cooldown tracking"""
     with get_db_connection() as conn:
         cursor = conn.cursor()
         today = date.today().isoformat()
@@ -330,7 +322,7 @@ def mark_command_used(user_id, chat_id, command):
         conn.commit()
 
 def get_leaderboard(chat_id, limit=10):
-    """SPEED'S LEADERBOARD SYSTEM - WHO'S THE SIGMA KING?! 👑"""
+    """Get aura leaderboard for chat"""
     with get_db_connection() as conn:
         cursor = conn.cursor()
         cursor.execute("""
@@ -344,7 +336,7 @@ def get_leaderboard(chat_id, limit=10):
         return cursor.fetchall()
 
 def get_chat_users(chat_id):
-    """SPEED'S USER COLLECTOR - GATHERING THE SQUAD! 👥"""
+    """Get all users in chat"""
     with get_db_connection() as conn:
         cursor = conn.cursor()
         cursor.execute("""
@@ -358,21 +350,21 @@ def get_chat_users(chat_id):
         return cursor.fetchall()
 
 def get_all_users():
-    """SPEED'S GLOBAL USER COUNT - THE ENTIRE SPEED NATION! 🌍"""
+    """Get all users globally"""
     with get_db_connection() as conn:
         cursor = conn.cursor()
         cursor.execute('SELECT DISTINCT user_id FROM users WHERE is_bot = 0')
         return [row[0] for row in cursor.fetchall()]
 
 def get_all_groups():
-    """SPEED'S GROUP EMPIRE - ALL THE SPEED TERRITORIES! 🏰"""
+    """Get all groups bot is in"""
     with get_db_connection() as conn:
         cursor = conn.cursor()
         cursor.execute('SELECT DISTINCT chat_id FROM chat_members WHERE chat_id < 0')
         return [row[0] for row in cursor.fetchall()]
 
 def get_active_chat_members(chat_id):
-    """SPEED'S ACTIVE MEMBER TRACKER - WHO'S STILL GRINDING?! 💪"""
+    """Get active chat members (last 30 days)"""
     with get_db_connection() as conn:
         cursor = conn.cursor()
         thirty_days_ago = (datetime.now() - timedelta(days=30)).isoformat()
@@ -388,7 +380,7 @@ def get_active_chat_members(chat_id):
         return cursor.fetchall()
 
 def save_daily_selection(chat_id, command, user_id, user_id_2=None, selection_data=None):
-    """SPEED'S DAILY SELECTION SAVER - LOCKING IN THE PICKS! 🔒"""
+    """Save daily command selection"""
     with get_db_connection() as conn:
         cursor = conn.cursor()
         today = date.today().isoformat()
@@ -402,7 +394,7 @@ def save_daily_selection(chat_id, command, user_id, user_id_2=None, selection_da
         conn.commit()
 
 def get_daily_selection(chat_id, command):
-    """SPEED'S DAILY SELECTION GETTER - WHO GOT PICKED TODAY?! 🎯"""
+    """Get today's daily command selection"""
     with get_db_connection() as conn:
         cursor = conn.cursor()
         today = date.today().isoformat()
@@ -422,7 +414,7 @@ def get_daily_selection(chat_id, command):
         return None
 
 def get_chat_member_count(chat_id):
-    """SPEED'S MEMBER COUNTER - HOW BIG IS THE SQUAD?! 📊"""
+    """Get count of chat members"""
     with get_db_connection() as conn:
         cursor = conn.cursor()
         cursor.execute("""
@@ -434,7 +426,7 @@ def get_chat_member_count(chat_id):
         return cursor.fetchone()['count']
 
 def cleanup_old_data():
-    """SPEED'S DATA CLEANER - KEEPING THE DATABASE FRESH! 🧹"""
+    """Clean up old database data"""
     with get_db_connection() as conn:
         cursor = conn.cursor()
         seven_days_ago = (datetime.now() - timedelta(days=7)).isoformat()
@@ -444,18 +436,15 @@ def cleanup_old_data():
         """, (seven_days_ago,))
         conn.commit()
 
-# ─────────────────────────────────────────────────────────────────────
-# SPEED'S MENTION HELPERS - BUILDING THOSE NAMES! 📛
-# ─────────────────────────────────────────────────────────────────────
-
+# Utility functions
 def _build_name(first_name: str | None, last_name: str | None) -> str:
-    """SPEED'S NAME BUILDER - MAKING SURE EVERYONE HAS A NAME! 🏷️"""
+    """Build user display name"""
     if first_name:
         return f"{first_name}{f' {last_name}' if last_name else ''}"
     return "User"
 
 def get_user_mention_html(user) -> str:
-    """SPEED'S MENTION MAKER - CLICKABLE NAMES FOR THE SQUAD! 🔗"""
+    """Generate HTML mention for user"""
     display = _build_name(user.first_name, getattr(user, 'last_name', None))
     return f'<a href="tg://user?id={user.id}">{sanitize_html(display)}</a>'
 
@@ -465,20 +454,17 @@ def get_user_mention_html_from_data(
     first_name: str | None,
     last_name: str | None
 ) -> str:
-    """SPEED'S DATA MENTION MAKER - USING STORED SQUAD INFO! 💾"""
+    """Generate HTML mention from stored user data"""
     display = sanitize_html(_build_name(first_name, last_name))
     return f'<a href="tg://user?id={user_id}">{display}</a>'
 
 def format_user_display_name(username: str | None, first_name: str | None, last_name: str | None) -> str:
-    """Utility to format a user's display name."""
+    """Format a user's display name"""
     return _build_name(first_name, last_name)
 
-# ---------------------------------------------------
-# TIME UTILS FOR GHOST COMMAND
-# ---------------------------------------------------
-
+# Time utilities
 def is_night_time_in_bangladesh() -> bool:
-    """SPEED'S NIGHT TIME CHECKER - IS IT GHOST HOUR IN BANGLADESH?! 🌙"""
+    """Check if it's night time in Bangladesh"""
     bd_tz = pytz.timezone(BANGLADESH_TZ)
     bd_time = datetime.now(bd_tz).time()
     night_start = time(18, 0)  # 6 PM
@@ -486,7 +472,7 @@ def is_night_time_in_bangladesh() -> bool:
     return bd_time >= night_start or bd_time <= night_end
 
 def get_time_until_night() -> tuple[int, int]:
-    """SPEED'S NIGHT TIME COUNTDOWN - WHEN CAN WE GHOST?! ⏰"""
+    """Get time until night in Bangladesh"""
     bd_tz = pytz.timezone(BANGLADESH_TZ)
     bd_now = datetime.now(bd_tz)
     bd_time = bd_now.time()
@@ -499,12 +485,9 @@ def get_time_until_night() -> tuple[int, int]:
     minutes = int((time_diff.total_seconds() % 3600) // 60)
     return hours, minutes
 
-# ---------------------------------------------------
-# RANDOM USER SELECTION
-# ---------------------------------------------------
-
+# Random user selection
 def select_random_users(users, count=1, exclude=None):
-    """Select random users from a list."""
+    """Select random users from a list"""
     if exclude is None:
         exclude = []
     available_users = [user for user in users if user['user_id'] not in exclude]
@@ -513,7 +496,7 @@ def select_random_users(users, count=1, exclude=None):
     return random.sample(available_users, count)
 
 def select_random_users_seeded(users, count=1, seed=None, exclude=None):
-    """Select random users with a seed for consistent daily selection."""
+    """Select random users with a seed for consistent daily selection"""
     if exclude is None:
         exclude = []
     available_users = [user for user in users if user['user_id'] not in exclude]
@@ -525,16 +508,13 @@ def select_random_users_seeded(users, count=1, seed=None, exclude=None):
     random.seed()
     return selected
 
-# ---------------------------------------------------
-# LEADERBOARD FORMATTING
-# ---------------------------------------------------
-
+# Leaderboard formatting
 def format_aura_leaderboard(leaderboard_data, chat_title=None):
-    """Format aura leaderboard message with IShowSpeed energy."""
+    """Format aura leaderboard message with IShowSpeed energy"""
     if not leaderboard_data:
         return "🔥 <b>AURA LEADERBOARD</b> 🔥\n\n💀 Yo Chat Is Dead... ZERO AURA Detected! SPEED'S Disappointed. Go Touch Grass And Come Back STRONGER 😭💀"
 
-    title = "🏃‍♂️ <b>SIGMA LEADERBOARD</b> 🏃‍♂️"
+    title = "🏃‍♂️ <b>SIGMA</b> 🏃‍♂️"
     if chat_title:
         title += f" - <b>{chat_title}</b>"
     title += " 🔥\n\n"
@@ -551,21 +531,18 @@ def format_aura_leaderboard(leaderboard_data, chat_title=None):
         if position <= 3:
             medal = medals[position - 1]
             if position == 1:
-                leaderboard_text += f"{medal} {user_mention}: <b>{aura}</b> AURA - SPEED RESPECTS THE GRIND! 👑🔥\n"
+                leaderboard_text += f"{medal} {user_mention}: <b>{aura}</b> AURA - Yess Sarr! 👑\n"
             else:
-                leaderboard_text += f"{medal} {user_mention}: <b>{aura}</b> AURA - W HUMAN! 💯\n"
+                leaderboard_text += f"{medal} {user_mention}: <b>{aura}</b> AURA - W Bro! 💯\n"
         else:
             leaderboard_text += f"🏅 {user_mention}: <b>{aura}</b> AURA\n"
 
-    leaderboard_text += "\n⚡ Speed says: Grind harder! Use more commands! Be like SPEED — fast and loud! 🔥💨"
+    leaderboard_text += "\n⚡ Yo what are y’all doing?! Run it up! Command after command! GO FASTER, GO LOUDER! 🔥💨"
     return leaderboard_text
 
-# ---------------------------------------------------
-# OTHER HELPERS
-# ---------------------------------------------------
-
+# Other helpers
 def extract_user_info(user):
-    """Extract user information from Telegram user object."""
+    """Extract user information from Telegram user object"""
     return {
         'user_id': user.id,
         'username': user.username,
@@ -576,16 +553,13 @@ def extract_user_info(user):
     }
 
 def sanitize_html(text: str) -> str:
-    """Sanitize HTML text."""
+    """Sanitize HTML text"""
     import html
     return html.escape(text)
 
-# ---------------------------------------------------
-# HANDLER FUNCTIONS
-# ---------------------------------------------------
-
+# Handler functions
 async def typing_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """SPEED'S TYPING ACTION - SHOWING SPEED IS THINKING! 💭"""
+    """Show typing action"""
     if update.effective_chat:
         await context.bot.send_chat_action(
             chat_id=update.effective_chat.id,
@@ -593,26 +567,22 @@ async def typing_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
 async def collect_group_members(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """SPEED'S MEMBER COLLECTOR - GATHERING THE ENTIRE SQUAD! 👥"""
+    """Collect group members and administrators"""
     if update.effective_chat.type in ['private']:
         return
 
     chat_id = update.effective_chat.id
     try:
-        # SPEED'S ADMIN CHECK - IS THE BOT ALLOWED?! 🔐
         bot_member = await context.bot.get_chat_member(chat_id, context.bot.id)
         if bot_member.status in ['administrator', 'creator']:
-            # SPEED'S BOT IS ADMIN - CAN COLLECT MEMBER LIST! 🔓
             try:
                 chat_member_count = await context.bot.get_chat_member_count(chat_id)
                 logger.info(f"SPEED'S CHAT {chat_id} HAS {chat_member_count} TOTAL MEMBERS! W COUNT! 👥")
                 if chat_member_count <= MAX_MEMBERS_PER_BATCH:
-                    # SPEED'S TELEGRAM API LIMITATION - NO DIRECT MEMBER ENUMERATION! 🚫
                     pass
             except Exception as e:
                 logger.warning(f"SPEED COULDN'T GET MEMBER COUNT FOR CHAT {chat_id}: {e}")
 
-        # SPEED'S ADMIN COLLECTOR - GATHERING THE RULERS! 👑
         administrators = await context.bot.get_chat_administrators(chat_id)
         for admin in administrators:
             if admin.user and not admin.user.is_bot:
@@ -624,7 +594,7 @@ async def collect_group_members(update: Update, context: ContextTypes.DEFAULT_TY
         logger.warning(f"SPEED COULDN'T COLLECT GROUP MEMBERS FOR CHAT {chat_id}: {e}")
 
 async def handle_new_member(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """SPEED'S NEW MEMBER HANDLER - WELCOMING THE FRESH SQUAD! 🎉"""
+    """Handle new member joining chat"""
     if not update.message or not update.message.new_chat_members:
         return
 
@@ -637,7 +607,7 @@ async def handle_new_member(update: Update, context: ContextTypes.DEFAULT_TYPE):
             logger.info(f"SPEED ADDED NEW MEMBER {member.id} TO CHAT {chat_id}! W ADDITION! 🎉")
 
 async def handle_member_left(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """SPEED'S MEMBER DEPARTURE HANDLER - SAYING GOODBYE TO THE QUITTERS! 👋"""
+    """Handle member leaving chat"""
     if not update.message or not update.message.left_chat_member:
         return
 
@@ -654,7 +624,7 @@ async def handle_member_left(update: Update, context: ContextTypes.DEFAULT_TYPE)
     logger.info(f"SPEED'S MEMBER {user_id} LEFT CHAT {chat_id}! GOODBYE! 👋")
 
 async def track_message_activity(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """SPEED'S MESSAGE ACTIVITY TRACKER - MONITORING THE GRIND! 📊"""
+    """Track user message activity"""
     if not update.effective_user or update.effective_user.is_bot:
         return
     if update.effective_chat.type == 'private':
@@ -667,14 +637,14 @@ async def track_message_activity(update: Update, context: ContextTypes.DEFAULT_T
     update_member_activity(chat_id, user.id)
 
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """SPEED'S START COMMAND - BEGINNING THE AURA JOURNEY! 🚀"""
+    """Handle /start command"""
     user = update.effective_user
     if not user:
         return
 
     await typing_action(update, context)
 
-    # SPEED'S BROADCAST MODE DISABLER - SWITCHING OFF THE MEGAPHONE! 📢
+    # Disable broadcast mode if active
     if user.id in broadcast_mode:
         broadcast_mode.discard(user.id)
         if user.id in broadcast_target:
@@ -686,34 +656,34 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     add_or_update_user(**user_info)
 
     start_message = f"""
-🔥 <b>Yooo {get_user_mention_html(user)}!</b> 愛  
-Welcome to Speed’s Aura Bot 💀💀  
-U just stepped into SPEED’S WORLD — get ready to go wild ⚡🏃‍♂️
+🔥 <b>Yo {get_user_mention_html(user)}!</b>  
+You just stepped into the damn AURA ZONE 💀  
+This ain’t no chill bot — this is raw chaos, motherfucker ⚡🏃‍♂️
 
-<b>🚀 Speed’s Commands:</b>  
-/gay 🌈 – Who’s gay today?  
-/couple 💘 – Find ur rizz match  
-/simp 😩 – Simping in 4K bro  
-/toxic ☠️ – Toxic? Like Speed’s chat  
-/respect 🫡 – W human detected  
-/sus 👀 – Real sus vibes rn  
-/aura 📊 – Check ur sigma stats 💯
+<b>🚨 Go stupid with these:</b>  
+/gay 🌈 – Who the fuck gay today?! 😂  
+/couple 💘 – Find your rizz partner before Speed steals 'em  
+/simp 😩 – Caught simpin’ in 4K… that’s tough  
+/toxic ☠️ – Only real demons press this  
+/respect 🫡 – W HUMAN DETECTED  
+/sus 👀 – Real sus vibes… Speed watchin’  
+/aura 📊 – Check your sigma stats or shut up 💯
 
 <b>📜 Rules:</b>  
-• 1 command per day  
-• Stack aura like SPEED stacks subs  
-• Be fast. Be loud. Be SPEED 🏆
+• One drop per day, don’t act greedy  
+• Stack that aura like a real menace  
+• Be loud. Be fast. Be built DIFFERENT 🏆
 
-LET’S GOOO 🔥🔥🔥
+Now stop readin’ and start runnin’ it up — LET’S GOOOO 🔥🔥🔥
 """
 
     keyboard = [
         [
-            InlineKeyboardButton("Updates 🔥", url=UPDATES_CHANNEL),
-            InlineKeyboardButton("Chat 💬", url=SUPPORT_GROUP)
+            InlineKeyboardButton("Updates", url=UPDATES_CHANNEL),
+            InlineKeyboardButton("Chat", url=SUPPORT_GROUP)
         ],
         [
-            InlineKeyboardButton("Add Speed To Your Group! 🚀", url=f"https://t.me/{BOT_USERNAME}?startgroup=true" if BOT_USERNAME else "https://t.me/SpeedAuraBot?startgroup=true")
+            InlineKeyboardButton("Add Me To Your Group! 🚀", url=f"https://t.me/{BOT_USERNAME}?startgroup=true" if BOT_USERNAME else "https://t.me/iShowNiggaBot?startgroup=true")
         ]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
@@ -725,42 +695,42 @@ LET’S GOOO 🔥🔥🔥
     )
 
 async def gay_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """SPEED'S GAY COMMAND - WHO'S THE RAINBOW KING?! 🏳️‍🌈"""
+    """Handle /gay command"""
     await handle_single_user_command(update, context, 'gay')
 
 async def couple_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """SPEED'S COUPLE COMMAND - FINDING THE LOVE BIRDS! 💕"""
+    """Handle /couple command"""
     await handle_couple_command(update, context)
 
 async def simp_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """SPEED'S SIMP COMMAND - CAUGHT SIMPING IN 4K! 🥺"""
+    """Handle /simp command"""
     await handle_single_user_command(update, context, 'simp')
 
 async def toxic_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """SPEED'S TOXIC COMMAND - MORE TOXIC THAN SPEED'S CHAT! ☠️"""
+    """Handle /toxic command"""
     await handle_single_user_command(update, context, 'toxic')
 
 async def cringe_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """SPEED'S CRINGE COMMAND - SPEED CAN'T WATCH THIS! 😬"""
+    """Handle /cringe command"""
     await handle_single_user_command(update, context, 'cringe')
 
 async def respect_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """SPEED'S RESPECT COMMAND - RESPECTING THE GRIND! 🫡"""
+    """Handle /respect command"""
     await handle_single_user_command(update, context, 'respect')
 
 async def sus_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """SPEED'S SUS COMMAND - EMERGENCY MEETING! 📮"""
+    """Handle /sus command"""
     await handle_single_user_command(update, context, 'sus')
 
 async def handle_single_user_command(update: Update, context: ContextTypes.DEFAULT_TYPE, command: str):
-    """SPEED'S SINGLE USER HANDLER - PICKING THE CHOSEN ONE! 🎯"""
+    """Handle single user selection commands"""
     if not update.effective_user or not update.effective_chat:
         return
 
     # Only work in groups
     if update.effective_chat.type == 'private':
         await update.message.reply_text(
-            "💀 Only for the real bosses in the group. Hit me up and let’s ignite that aura — burn it DOWN! 🔥🔥"
+            "💀 Yo bro, this ain't for DMs! Add me to a group and let's go crazy with the squad! 🔥⚡"
         )
         return
 
@@ -775,17 +745,16 @@ async def handle_single_user_command(update: Update, context: ContextTypes.DEFAU
     add_or_update_user(**user_info)
     update_member_activity(chat_id, user_id)
 
-    # SPEED'S PROPER INDENTATION - CLEAN CODE FOR THE WIN! ✅
     can_use, reason = can_use_command(user_id, chat_id, command)
 
     if not can_use:
         if reason == 'hourly_limit':
             await update.message.reply_text(
-                f"⏳ Yo Boss! Patience is key — wait a whole hour before you blast /{command} again. Don’t be reckless, stay SPEED! 🦾"
+                f"⏳ Yo bro! Chill for a hour before hitting /{command} again. Speed says patience is key! 🔥⚡"
             )
         else:
             await update.message.reply_text(
-                f"⏳ Yo, you already ran /{command} today. Come back stronger tomorrow, champ 👑"
+                f"⏳ Nah bro, you already used /{command} today! Come back tomorrow and try again 👑💯"
             )
         return
 
@@ -819,7 +788,7 @@ async def handle_single_user_command(update: Update, context: ContextTypes.DEFAU
 
     if len(active_members) < 1:
         await update.message.reply_text(
-            "💀 Can’t run this solo, motherfucker. Bring the fucking energy or don’t show up 🦾"
+            "💀 Yo chat is dead! Speed needs at least someone here to make this work 🔥😭"
         )
         return
 
@@ -828,7 +797,7 @@ async def handle_single_user_command(update: Update, context: ContextTypes.DEFAU
 
     if not selected_users:
         await update.message.reply_text(
-            "😬 No cap, couldn’t find the user. Try again later, fam!"
+            "😬 Bruh, couldn't pick anyone! Try again later when the chat has some energy! 💀"
         )
         return
 
@@ -850,22 +819,22 @@ async def handle_single_user_command(update: Update, context: ContextTypes.DEFAU
     final_message = message_template.format(user=selected_user_mention)
 
     if aura_change > 0:
-        final_message += f"\n\n🔥 <b>+{aura_change} Aura Points! Speed Respects The Grind!</b> 👑💯"
+        final_message += f"\n\n🔥 <b>+{aura_change} Aura Points! That’s how you do it, bitch!</b> 👑💯"
     else:
-        final_message += f"\n\n💀 <b>{aura_change} AURA POINTS?! SPEED EXPECTED MORE! STEP UP OR SHUT UP!</b> 😭🔥"
+        final_message += f"\n\n💀 <b>Lost {aura_change} Aura points? Bruh, at this rate, even ghosts got more aura than you!</b> 😂"
 
     await update.message.reply_text(final_message, parse_mode=ParseMode.HTML)
     mark_command_used(user_id, chat_id, command)
 
 async def handle_couple_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """SPEED'S COUPLE COMMAND - FINDING THE LOVE BIRDS! 💕"""
+    """Handle couple command logic"""
     if not update.effective_user or not update.effective_chat:
         return
     
     # Only work in groups
     if update.effective_chat.type == 'private':
         await update.message.reply_text(
-            "💀 This command ain’t for no solo clowns. Add me to your group and let’s blow up that aura grind 🦾"
+            "💀 Yo bro, this ain't for DMs! Add me to a group and let's find some couples! 🔥💑"
         )
         return
     
@@ -887,11 +856,11 @@ async def handle_couple_command(update: Update, context: ContextTypes.DEFAULT_TY
     if not can_use:
         if reason == 'hourly_limit':
             await update.message.reply_text(
-                f"⏳ Patience, boss! Wait an hour before hitting /{command} again 🦾"
+                f"⏳ Yo bro! Chill for a hour before hitting /{command} again. Speed says patience is key! 🔥⚡"
             )
         else:
             await update.message.reply_text(
-                f"⏳ Yo, you already ran /{command} today. Come back stronger tomorrow, champ 👑"
+                f"⏳ Nah bro, you already used /{command} today! Come back tomorrow and try again 👑💯"
             )
         return
     
@@ -940,7 +909,7 @@ async def handle_couple_command(update: Update, context: ContextTypes.DEFAULT_TY
     
     if len(active_members) < 2:
         await update.message.reply_text(
-            "💀 Yo, chat’s DEAD! Speed needs at least 2 people to make a couple — where the fuck is everybody?! 😭💀"
+            "💀 Yo chat is dead! Speed needs at least 2 people to make this work! Where everybody at?! 🔥😭"
         )
         return
     
@@ -950,7 +919,7 @@ async def handle_couple_command(update: Update, context: ContextTypes.DEFAULT_TY
     
     if len(selected_users) < 2:
         await update.message.reply_text(
-            "😭 Couple vibes ain’t loading, chat! Try again later when someone actually shows up! 🌹💀"
+            "😭 Yo, couldn't find 2 people! Chat needs more energy, try again later! 💀🔥"
         )
         return
     
@@ -983,14 +952,14 @@ async def handle_couple_command(update: Update, context: ContextTypes.DEFAULT_TY
     mark_command_used(user_id, chat_id, command)
 
 async def ghost_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """SPEED'S GHOST COMMAND - ONLY WORKS AT NIGHT IN BANGLADESH TIME! 👻"""
+    """Handle /ghost command (night time only)"""
     if not update.effective_user or not update.effective_chat:
         return
     
     # Only work in groups
     if update.effective_chat.type == 'private':
         await update.message.reply_text(
-            "💀 Solo? Nah. Add me to a group if you’re serious about that aura hustle 🦾"
+            "💀 Yo bro, this ain't for DMs! Add me to a group and let's get spooky! 👻🔥"
         )
         return
     
@@ -1005,7 +974,7 @@ async def ghost_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not is_night_time_in_bangladesh():
         hours, minutes = get_time_until_night()
         await update.message.reply_text(
-            f"🌙 Ghost vibes only from 6 PM to 6 AM BD!\n⏰ Chill for {hours}h {minutes}m, then pull up and flex with the shadows, fam 👻"
+            f"🌙 Yo ghost mode is only 6 PM to 6 AM BD time!\n\n⏰ Wait {hours}h {minutes}m and then we can get spooky! 👻🔥"
         )
         return
     
@@ -1020,11 +989,11 @@ async def ghost_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not can_use:
         if reason == 'hourly_limit':
             await update.message.reply_text(
-                f"⏰ Spirits need to recharge, bro! Wait an hour before you summon again or get smoked by the shadows 👻💀"
+                f"⏰ Chill the hell out, nigga! Wait an hour or get faded by the shadows 👻💀"
             )
         else:
             await update.message.reply_text(
-                f"👻 You already summoned the ghost today! Wait till tomorrow or risk getting haunted, dummy 💀🕯️"
+                f"👻 Ghost’s already out today! Wait till tomorrow or get fucked up, nigga 💀"
             )
         return
     
@@ -1061,7 +1030,7 @@ async def ghost_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     if len(active_members) < 1:
         await update.message.reply_text(
-            "💀 Yo chat is EMPTY! Speed needs bodies in here — where y’all at?! Bring the squad and run it up! 😭🔥"
+            "💀 Chat dead as hell. Where y’all at fam? Pull up with the squad and turn this shit up! 😭🔥"
         )
         return
     
@@ -1071,7 +1040,7 @@ async def ghost_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     if not selected_users:
         await update.message.reply_text(
-            "😭 Spirits pulled up but found the chat DEAD! No one to vibe with... come back later and run it right! 👻🔥"
+            "😭 Spirits showed up and dipped. Chat was dead, vibe was trash. Come back when it’s lit! 👻🔥"
         )
         return
     
@@ -1097,20 +1066,20 @@ async def ghost_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     final_message = message_template.format(user=selected_user_mention)
     
     # Add aura change info
-    final_message += f"\n\n💀 <b>{aura_change} Aura Points! The spirits ain't feelin’ your vibe today...</b> 👻📉"
+    final_message += f"\n\n💀 <b>{aura_change} Aura gone. Spirits saw your ass and dipped.</b> 👻📉"
     
     await update.message.reply_text(final_message, parse_mode=ParseMode.HTML)
     mark_command_used(user_id, chat_id, command)
 
 async def aura_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """SPEED'S AURA COMMAND - SHOW THE LEADERBOARD! 🏆"""
+    """Handle /aura command (show leaderboard)"""
     if not update.effective_chat:
         return
     
     # Only work in groups
     if update.effective_chat.type == 'private':
         await update.message.reply_text(
-            "🗿 Solo grinding? Nah, this is squad territory. Drop me in a group and let the flex wars begin! 💀📈"
+            "💀 Yo bro, this ain't for DMs! Add me to a group and let's go crazy with the squad! 🔥⚡"
         )
         return
     
@@ -1133,7 +1102,7 @@ async def aura_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 async def broadcast_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """SPEED'S BROADCAST COMMAND - OWNER ONLY MEGAPHONE! 📢"""
+    """Handle /broadcast command (owner only)"""
     user_info = extract_user_info(update.message.from_user)
     logger.info(f"📢 SPEED'S BROADCAST COMMAND ATTEMPTED BY {user_info.get('full_name', 'Unknown')}!")
 
@@ -1169,19 +1138,19 @@ async def broadcast_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     logger.info(f"✅ Broadcast target selection sent, message ID: {response.message_id}")
 
 async def ping_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """SPEED'S PING COMMAND - CHECK THE SPEED! ⚡"""
+    """Handle /ping command"""
     import time
     start_time = time.time()
     await typing_action(update, context)
     end_time = time.time()
     response_time = round((end_time - start_time) * 1000, 2)
     await update.message.reply_text(
-        f"🏃‍♂️ PONG! SPEED'S RESPONSE TIME: {response_time}ms ⚡",
+        f"⚡ <a href="{SUPPORT_GROUP}">BOOM!</a> {response_time}ms",
         parse_mode=ParseMode.HTML
     )
 
 async def handle_broadcast_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """SPEED'S BROADCAST TARGET SELECTOR - CHOOSING THE AUDIENCE! 🎯"""
+    """Handle broadcast target selection callback"""
     query = update.callback_query
     await query.answer()
     
@@ -1212,7 +1181,7 @@ async def handle_broadcast_callback(update: Update, context: ContextTypes.DEFAUL
             logger.error(f"❌ SPEED'S BROADCAST MESSAGE EDIT FAILED: {e}")
 
 async def handle_broadcast_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """SPEED'S BROADCAST MESSAGE SENDER - DELIVERING THE SPEED MESSAGE! 📬"""
+    """Handle broadcast message sending"""
     if not update.message.from_user or update.message.from_user.id not in broadcast_mode:
         return
     
@@ -1260,7 +1229,7 @@ async def handle_broadcast_message(update: Update, context: ContextTypes.DEFAULT
     logger.info(f"🔓 SPEED'S BROADCAST MODE DISABLED FOR {update.message.from_user.id}!")
 
 async def cleanup_expired_data(context: ContextTypes.DEFAULT_TYPE):
-    """SPEED'S PERIODIC CLEANUP - AUTOMATIC MAINTENANCE! 🔄"""
+    """Periodic cleanup function"""
     try:
         cleanup_old_data()
         logger.info("SPEED'S DATABASE CLEANUP COMPLETED! W MAINTENANCE! 🧹")
@@ -1268,7 +1237,7 @@ async def cleanup_expired_data(context: ContextTypes.DEFAULT_TYPE):
         logger.error(f"SPEED'S DATABASE CLEANUP FAILED: {e}")
 
 def setup_periodic_jobs(application):
-    """SPEED'S JOB SCHEDULER - SETTING UP THE AUTOMATED GRIND! ⏰"""
+    """Setup periodic jobs for the application"""
     try:
         job_queue = application.job_queue
         if job_queue:
@@ -1285,9 +1254,7 @@ def setup_periodic_jobs(application):
         logger.warning(f"SPEED'S PERIODIC JOBS SETUP FAILED: {e}")
 
 async def on_startup(application: Application) -> None:
-    """
-    SPEED'S STARTUP FUNCTION - REGISTERING COMMANDS AND GETTING USERNAME! 🚀
-    """
+    """Initialize bot on startup"""
     global BOT_USERNAME
     
     # Get bot info to set username dynamically
@@ -1297,7 +1264,7 @@ async def on_startup(application: Application) -> None:
         logger.info(f"SPEED'S BOT USERNAME SET: @{BOT_USERNAME} - LET'S GOOO! 🔥")
     except Exception as e:
         logger.error(f"SPEED'S BOT INFO FAILED: {e}")
-        BOT_USERNAME = "SpeedAuraBot"  # SPEED'S FALLBACK USERNAME! 🔄
+        BOT_USERNAME = "iShowNiggaBot"
     
     commands = [
            BotCommand("start", "🔥 Speed's Bot"),
@@ -1315,7 +1282,7 @@ async def on_startup(application: Application) -> None:
     await application.bot.set_my_commands(commands)
     logger.info("SPEED'S COMMANDS REGISTERED SUCCESSFULLY! W SETUP! 💯")
 
- # ─── SPEED'S HTTP SERVER - KEEPING THE GRIND ALIVE! ─────────────────────────
+# HTTP server for health checks
 class SpeedHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         self.send_response(200)
@@ -1327,17 +1294,15 @@ class SpeedHandler(BaseHTTPRequestHandler):
         self.end_headers()
 
 def start_speed_server():
-    port = int(os.environ.get("PORT", 10000))  # SPEED'S PORT INJECTION! ⚡
+    port = int(os.environ.get("PORT", 10000))
     server = HTTPServer(("0.0.0.0", port), SpeedHandler)
     print(f"SPEED'S SERVER LISTENING ON PORT {port} - LET'S GOOO! 🔥")
     server.serve_forever()
 
 def main():
-    """SPEED'S MAIN FUNCTION - START THE AURA GRIND! 🔥"""
-    # SPEED'S DATABASE INITIALIZATION! 💾
+    """Main function to start the bot"""
     init_database()
     
-    # SPEED'S APPLICATION BUILDER - CREATING THE LEGEND! 🏗️
     application = Application.builder().token(BOT_TOKEN).build()
     
     # Add handlers
@@ -1390,6 +1355,6 @@ def main():
     application.run_polling(drop_pending_updates=True)
 
 if __name__ == '__main__':
-    # SPEED'S HTTP SERVER FOR HEALTH CHECKS! 🏥
+    # Start HTTP server for health checks
     threading.Thread(target=start_speed_server, daemon=True).start()
     main()

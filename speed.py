@@ -656,25 +656,25 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     add_or_update_user(**user_info)
 
     start_message = f"""
-🔥 <b>Yo {get_user_mention_html(user)}!</b>  
-You just stepped into the damn AURA ZONE 💀  
-This ain’t no chill bot — this is raw chaos, motherfucker ⚡🏃‍♂️
+🔥 <b>YOOOO {get_user_mention_html(user)}!!!</b>  
+Wassup boiii?! you just pulled up in the OHIO ZONE.
 
-<b>🚨 Go stupid with these:</b>  
-/gay 🌈 – Who the fuck gay today?! 😂  
-/couple 💘 – Find your rizz partner before Speed steals 'em  
-/simp 😩 – Caught simpin’ in 4K… that’s tough  
-/toxic ☠️ – Only real demons press this  
-/respect 🫡 – W HUMAN DETECTED  
-/sus 👀 – Real sus vibes… Speed watchin’  
-/aura 📊 – Check your sigma stats or shut up 💯
+SUUIIIII Cristiano the real GOAT. Luffy is better bro. 
 
-<b>📜 Rules:</b>  
-• One drop per day, don’t act greedy  
-• Stack that aura like a real menace  
-• Be loud. Be fast. Be built DIFFERENT 🏆
+<b>💣 COMMANDS TO GO DUMB:</b>  
+├─ 🌈 /gay • Who gay today?  
+├─ 😩 /simp • Caught simpin in 4K  
+├─ 💞 /couple • Get yo rizz game up  
+├─ 💀 /toxic • Demon mode activated  
+├─ 🫡 /respect • W HUMAN ALERT  
+└─ 📊 /aura • Check yo stats boi
 
-Now stop readin’ and start runnin’ it up — LET’S GOOOO 🔥🔥🔥
+<b>📜 REAL TALK:</b>  
+• One drop a day, don’t act hungry  
+• Stack that aura like a menace  
+• Be LOUD, be WILD, be HIM 💯
+
+YESS SARRR! LEEEEEES FUCKIN GOOOOOOOOO!!!! 🔥
 """
 
     keyboard = [
@@ -683,7 +683,7 @@ Now stop readin’ and start runnin’ it up — LET’S GOOOO 🔥🔥🔥
             InlineKeyboardButton("Chat", url=SUPPORT_GROUP)
         ],
         [
-            InlineKeyboardButton("Add Me To Your Group! 🚀", url=f"https://t.me/{BOT_USERNAME}?startgroup=true" if BOT_USERNAME else "https://t.me/iShowNiggaBot?startgroup=true")
+            InlineKeyboardButton("Add Me To Your Group", url=f"https://t.me/{BOT_USERNAME}?startgroup=true" if BOT_USERNAME else "https://t.me/iShowNiggaBot?startgroup=true")
         ]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)

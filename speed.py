@@ -192,6 +192,8 @@ broadcast_mode = set()
 broadcast_target = {}
 daily_selections = {}
 user_cooldowns = {}
+# Store active users per chat (users who have sent messages recently)
+chat_active_users = {}
 
 # Command messages mapping
 COMMAND_MESSAGES = {
@@ -335,22 +337,67 @@ async def get_chat_members(update, context):
     members = []
     
     try:
-        # Get chat administrators first
+        # Get administrators first
         administrators = await context.bot.get_chat_administrators(chat_id)
+        admin_ids = set()
         for admin in administrators:
             if not admin.user.is_bot:
                 members.append(admin.user)
+                admin_ids.add(admin.user.id)
         
-        # If we have enough members from admins, return them
-        if len(members) >= 2:
-            return members
+        # Add active users from this chat (users who have interacted recently)
+        if chat_id in chat_active_users:
+            for user in chat_active_users[chat_id]:
+                if user.id not in admin_ids and not user.is_bot:
+                    members.append(user)
         
-        # For smaller groups, we'll work with what we have
+        # Always include the command sender if not already included
+        if update.effective_user and update.effective_user.id not in admin_ids:
+            if not update.effective_user.is_bot:
+                members.append(update.effective_user)
+                # Also add them to active users for future commands
+                if chat_id not in chat_active_users:
+                    chat_active_users[chat_id] = []
+                # Check if user is already in active users list
+                user_exists = any(u.id == update.effective_user.id for u in chat_active_users[chat_id])
+                if not user_exists:
+                    chat_active_users[chat_id].append(update.effective_user)
+        
         return members
         
     except Exception as e:
         logger.warning(LOG_MESSAGES[6].format(error=e))
+        # Emergency fallback: at least include the command sender
+        if update.effective_user and not update.effective_user.is_bot:
+            return [update.effective_user]
         return []
+
+async def track_active_user(update, context):
+    """Track active users in groups for better member selection"""
+    if not update.effective_user or not update.effective_chat:
+        return
+    
+    # Only track in groups
+    if update.effective_chat.type == 'private':
+        return
+    
+    chat_id = update.effective_chat.id
+    user = update.effective_user
+    
+    if user.is_bot:
+        return
+    
+    # Initialize chat users list if it doesn't exist
+    if chat_id not in chat_active_users:
+        chat_active_users[chat_id] = []
+    
+    # Check if user is already tracked
+    user_exists = any(u.id == user.id for u in chat_active_users[chat_id])
+    if not user_exists:
+        chat_active_users[chat_id].append(user)
+        # Keep only last 50 active users per chat to prevent memory issues
+        if len(chat_active_users[chat_id]) > 50:
+            chat_active_users[chat_id] = chat_active_users[chat_id][-50:]
 
 # Handler functions
 
@@ -687,6 +734,11 @@ async def handle_broadcast_message(update, context):
     # For now, just acknowledge the broadcast (since we removed database)
     await update.message.reply_text(BROADCAST_MESSAGES[1], parse_mode=ParseMode.HTML)
 
+async def handle_group_messages(update, context):
+    """Handle all group messages to track active users"""
+    # Track active users for better member selection
+    await track_active_user(update, context)
+
 async def on_startup(application):
     """Initialize bot on startup"""
     global BOT_USERNAME
@@ -744,6 +796,12 @@ def main():
     application.add_handler(MessageHandler(
         filters.ChatType.PRIVATE & ~filters.COMMAND,
         handle_broadcast_message
+    ))
+    
+    # Track active users in groups (for better member selection)
+    application.add_handler(MessageHandler(
+        filters.ChatType.GROUPS & ~filters.COMMAND,
+        handle_group_messages
     ))
     
     # Register startup hook

@@ -154,7 +154,7 @@ BROADCAST_MESSAGES = [
 ]
 
 PING_MESSAGES = [
-    "⚡ Pong! {response_time}ms"
+    "🏓 <a href=\"https://t.me/SoulMeetsHQ\">Pong!</a> {response_time}ms"
 ]
 
 HEALTH_MESSAGES = [
@@ -179,7 +179,7 @@ LOG_MESSAGES = [
 BOT_TOKEN = os.getenv("BOT_TOKEN", "your_bot_token_here")
 OWNER_ID = 5290407067
 UPDATES_CHANNEL = "https://t.me/WorkGlows"
-SUPPORT_GROUP = "https://t.me/TheCryptoElders"
+SUPPORT_GROUP = "https://t.me/SoulMeetsHQ"
 BOT_USERNAME = None
 BANGLADESH_TZ = 'Asia/Dhaka'
 
@@ -625,13 +625,21 @@ async def broadcast_command(update, context):
 async def ping_command(update, context):
     """Handle /ping command"""
     import time
+    
+    # Send initial pinging message
     start_time = time.time()
-    await typing_action(update, context)
+    ping_message = await update.message.reply_text("🛰️ Pinging...")
+    
+    # Calculate response time
     end_time = time.time()
     response_time = round((end_time - start_time) * 1000, 2)
-    await update.message.reply_text(
-        PING_MESSAGES[0].format(response_time=response_time),
-        parse_mode=ParseMode.HTML
+    
+    # Edit the message to show pong result using dictionary
+    pong_message = PING_MESSAGES[0].format(support_link=SUPPORT_GROUP, response_time=response_time)
+    await ping_message.edit_text(
+        pong_message,
+        parse_mode=ParseMode.HTML,
+        disable_web_page_preview=True
     )
 
 async def handle_broadcast_message(update, context):

@@ -207,26 +207,43 @@ COMMAND_MESSAGES = {
 
 # Utility functions
 
-def build_name(first_name, last_name):
-    """Build user display name"""
-    if first_name and first_name.strip():
-        name = first_name.strip()
-        if last_name and last_name.strip():
-            name += f" {last_name.strip()}"
-        return name
-    return "Anonymous User"
-
-def get_user_mention_html(user):
-    """Generate HTML mention for user"""
-    display = build_name(user.first_name, getattr(user, 'last_name', None))
-    return f'<a href="tg://user?id={user.id}">{sanitize_html(display)}</a>'
+def get_full_name(user):
+    """Get user's full name (first name + last name if available)"""
+    if not user:
+        return "Unknown User"
+    
+    name_parts = []
+    
+    # Add first name if it exists and is not empty
+    if hasattr(user, 'first_name') and user.first_name and user.first_name.strip():
+        name_parts.append(user.first_name.strip())
+    
+    # Add last name if it exists and is not empty
+    if hasattr(user, 'last_name') and user.last_name and user.last_name.strip():
+        name_parts.append(user.last_name.strip())
+    
+    # If no name parts found, return default
+    if not name_parts:
+        return "Anonymous User"
+    
+    return " ".join(name_parts)
 
 def sanitize_html(text):
-    """Sanitize HTML text"""
+    """Sanitize HTML text to prevent injection"""
     import html
     if not text:
         return "User"
     return html.escape(str(text))
+
+def create_user_mention(user):
+    """Create HTML user mention with href and full name"""
+    if not user or not hasattr(user, 'id'):
+        return "Unknown User"
+    
+    full_name = get_full_name(user)
+    sanitized_name = sanitize_html(full_name)
+    
+    return f'<a href="tg://user?id={user.id}">{sanitized_name}</a>'
 
 def is_night_time_in_bangladesh():
     """Check if it's night time in Bangladesh"""
@@ -360,7 +377,7 @@ async def start_command(update, context):
             del broadcast_target[user.id]
         logger.info(LOG_MESSAGES[7].format(user_id=user.id))
 
-    user_mention = get_user_mention_html(user)
+    user_mention = create_user_mention(user)
     start_message = START_MESSAGES[0].format(user=user_mention)
 
     keyboard = [
@@ -411,7 +428,7 @@ async def handle_single_user_command(update, context, command):
         try:
             selected_user = await context.bot.get_chat_member(chat_id, existing_selection['user_id'])
             if selected_user and selected_user.user:
-                selected_user_mention = get_user_mention_html(selected_user.user)
+                selected_user_mention = create_user_mention(selected_user.user)
                 message_template = random.choice(COMMAND_MESSAGES[command])
                 final_message = message_template.format(user=selected_user_mention)
                 await update.message.reply_text(final_message, parse_mode=ParseMode.HTML)
@@ -439,7 +456,7 @@ async def handle_single_user_command(update, context, command):
     selected_user = selected_users[0]
     save_daily_selection(chat_id, command, selected_user.id)
 
-    selected_user_mention = get_user_mention_html(selected_user)
+    selected_user_mention = create_user_mention(selected_user)
     message_template = random.choice(COMMAND_MESSAGES[command])
     final_message = message_template.format(user=selected_user_mention)
 
@@ -480,8 +497,8 @@ async def handle_couple_command(update, context):
             user2 = await context.bot.get_chat_member(chat_id, existing_selection['user_id_2'])
             
             if user1 and user1.user and user2 and user2.user:
-                user1_mention = get_user_mention_html(user1.user)
-                user2_mention = get_user_mention_html(user2.user)
+                user1_mention = create_user_mention(user1.user)
+                user2_mention = create_user_mention(user2.user)
                 
                 message_template = random.choice(COMMAND_MESSAGES[command])
                 final_message = message_template.format(user1=user1_mention, user2=user2_mention)
@@ -511,8 +528,8 @@ async def handle_couple_command(update, context):
     user1, user2 = selected_users
     save_daily_selection(chat_id, command, user1.id, user2.id)
     
-    user1_mention = get_user_mention_html(user1)
-    user2_mention = get_user_mention_html(user2)
+    user1_mention = create_user_mention(user1)
+    user2_mention = create_user_mention(user2)
     
     message_template = random.choice(COMMAND_MESSAGES[command])
     final_message = message_template.format(user1=user1_mention, user2=user2_mention)
@@ -558,7 +575,7 @@ async def ghost_command(update, context):
         try:
             selected_user = await context.bot.get_chat_member(chat_id, existing_selection['user_id'])
             if selected_user and selected_user.user:
-                selected_user_mention = get_user_mention_html(selected_user.user)
+                selected_user_mention = create_user_mention(selected_user.user)
                 message_template = random.choice(COMMAND_MESSAGES[command])
                 final_message = message_template.format(user=selected_user_mention)
                 await update.message.reply_text(final_message, parse_mode=ParseMode.HTML)
@@ -586,7 +603,7 @@ async def ghost_command(update, context):
     selected_user = selected_users[0]
     save_daily_selection(chat_id, command, selected_user.id)
     
-    selected_user_mention = get_user_mention_html(selected_user)
+    selected_user_mention = create_user_mention(selected_user)
     message_template = random.choice(COMMAND_MESSAGES[command])
     final_message = message_template.format(user=selected_user_mention)
     

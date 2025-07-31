@@ -43,13 +43,16 @@ COMMANDS = [
     BotCommand("respect", "🫡 Respect giver"),
     BotCommand("sus", "👀 Sus detector"),
     BotCommand("ghost", "👻 Ghost mode"),
-    BotCommand("ping", "⚡ Check response time"),
 ]
 
 # Message dictionaries
 
 START_MESSAGES = [
-    "🎉 <b>Hello {user}!</b>\n\nWelcome to the fun bot! Here are the available commands:\n\n<b>🎮 Available Commands:</b>\n├─ 🌈 /gay • Random gay selection\n├─ 😅 /simp • Find today's simp\n├─ 💞 /couple • Match a couple\n├─ 💀 /toxic • Toxic person selector\n├─ 😬 /cringe • Cringe detector\n├─ 🫡 /respect • Show respect\n├─ 👀 /sus • Sus detector\n└─ 👻 /ghost • Ghost mode (night only)\n\n<b>📝 Rules:</b>\n• Each command can be used once per day per person\n• Have fun and keep it friendly!\n• Ghost command only works 6 PM - 6 AM BD time\n\nEnjoy using the bot! 🚀"
+    f"""🐱 <b>Hey there {{user}}!</b>
+
+Welcome to our amazing bot! We're excited to have you here. Get ready for some fun interactions and enjoy your time with us!
+
+Lets begin the fun! 😺"""
 ]
 
 GAY_MESSAGES = [

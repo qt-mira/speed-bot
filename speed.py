@@ -50,7 +50,7 @@ COMMANDS = [
 START_MESSAGES = [
     f"""🐱 <b>Hey there {{user}}!</b>
 
-Welcome to our amazing bot! We're excited to have you here. Get ready for some fun interactions and enjoy your time with us!
+Welcome! We're excited to have you here. Get ready for some fun interactions and enjoy your time with us!
 
 Lets begin the fun! 😺"""
 ]

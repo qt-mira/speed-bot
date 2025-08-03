@@ -209,43 +209,14 @@ COMMAND_MESSAGES = {
 
 # Utility functions
 
-def get_full_name(user):
-    """Get user's full name (first name + last name if available)"""
-    if not user:
-        return "Unknown User"
-    
-    name_parts = []
-    
-    # Add first name if it exists and is not empty
-    if hasattr(user, 'first_name') and user.first_name and user.first_name.strip():
-        name_parts.append(user.first_name.strip())
-    
-    # Add last name if it exists and is not empty
-    if hasattr(user, 'last_name') and user.last_name and user.last_name.strip():
-        name_parts.append(user.last_name.strip())
-    
-    # If no name parts found, return default
-    if not name_parts:
-        return "Anonymous User"
-    
-    return " ".join(name_parts)
-
-def sanitize_html(text):
-    """Sanitize HTML text to prevent injection"""
-    import html
-    if not text:
-        return "User"
-    return html.escape(str(text))
-
 def create_user_mention(user):
-    """Create HTML user mention with href and full name"""
-    if not user or not hasattr(user, 'id'):
-        return "Unknown User"
+    """Create user mention with first name or full name"""
+    first = user.first_name.strip()
+    last = getattr(user, 'last_name', '').strip()
     
-    full_name = get_full_name(user)
-    sanitized_name = sanitize_html(full_name)
+    name = f"{first} {last}".strip() if last else first
     
-    return f'<a href="tg://user?id={user.id}">{sanitized_name}</a>'
+    return f'<a href="tg://user?id={user.id}">{name}</a>'
 
 def is_night_time_in_bangladesh():
     """Check if it's night time in Bangladesh"""

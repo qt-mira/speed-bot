@@ -211,8 +211,12 @@ COMMAND_MESSAGES = {
 
 def create_user_mention(user):
     """Create user mention with first name or full name"""
-    first = user.first_name.strip()
-    last = getattr(user, 'last_name', '').strip()
+    if user is None:
+        return "Unknown User"
+    
+    first = user.first_name.strip() if user.first_name else "Unknown"
+    last = getattr(user, 'last_name', None)
+    last = last.strip() if last else ''
     
     name = f"{first} {last}".strip() if last else first
     
@@ -444,9 +448,9 @@ async def handle_single_user_command(update, context, command):
     existing_selection = get_daily_selection(chat_id, command)
     if existing_selection:
         try:
-            selected_user = await context.bot.get_chat_member(chat_id, existing_selection['user_id'])
-            if selected_user and selected_user.user:
-                selected_user_mention = create_user_mention(selected_user.user)
+            selected_user_member = await context.bot.get_chat_member(chat_id, existing_selection['user_id'])
+            if selected_user_member and selected_user_member.user:
+                selected_user_mention = create_user_mention(selected_user_member.user)
                 message_template = random.choice(COMMAND_MESSAGES[command])
                 final_message = message_template.format(user=selected_user_mention)
                 await update.message.reply_text(final_message, parse_mode=ParseMode.HTML)
@@ -454,6 +458,7 @@ async def handle_single_user_command(update, context, command):
                 return
         except Exception as e:
             logger.warning(f"Error getting existing selection: {e}")
+            # Clear the invalid selection and continue with new selection
             pass
 
     # Get chat members
@@ -472,6 +477,12 @@ async def handle_single_user_command(update, context, command):
         return
 
     selected_user = selected_users[0]
+    
+    # Additional null check
+    if selected_user is None:
+        await update.message.reply_text(ERROR_MESSAGES[2])
+        return
+        
     save_daily_selection(chat_id, command, selected_user.id)
 
     selected_user_mention = create_user_mention(selected_user)
@@ -511,12 +522,12 @@ async def handle_couple_command(update, context):
     existing_selection = get_daily_selection(chat_id, command)
     if existing_selection:
         try:
-            user1 = await context.bot.get_chat_member(chat_id, existing_selection['user_id'])
-            user2 = await context.bot.get_chat_member(chat_id, existing_selection['user_id_2'])
+            user1_member = await context.bot.get_chat_member(chat_id, existing_selection['user_id'])
+            user2_member = await context.bot.get_chat_member(chat_id, existing_selection['user_id_2'])
             
-            if user1 and user1.user and user2 and user2.user:
-                user1_mention = create_user_mention(user1.user)
-                user2_mention = create_user_mention(user2.user)
+            if user1_member and user1_member.user and user2_member and user2_member.user:
+                user1_mention = create_user_mention(user1_member.user)
+                user2_mention = create_user_mention(user2_member.user)
                 
                 message_template = random.choice(COMMAND_MESSAGES[command])
                 final_message = message_template.format(user1=user1_mention, user2=user2_mention)
@@ -526,6 +537,7 @@ async def handle_couple_command(update, context):
                 return
         except Exception as e:
             logger.warning(f"Error getting existing couple selection: {e}")
+            # Clear invalid selection and continue
             pass
     
     # Get chat members
@@ -544,6 +556,12 @@ async def handle_couple_command(update, context):
         return
     
     user1, user2 = selected_users
+    
+    # Additional null checks
+    if user1 is None or user2 is None:
+        await update.message.reply_text(ERROR_MESSAGES[5])
+        return
+        
     save_daily_selection(chat_id, command, user1.id, user2.id)
     
     user1_mention = create_user_mention(user1)
@@ -591,9 +609,9 @@ async def ghost_command(update, context):
     existing_selection = get_daily_selection(chat_id, command)
     if existing_selection:
         try:
-            selected_user = await context.bot.get_chat_member(chat_id, existing_selection['user_id'])
-            if selected_user and selected_user.user:
-                selected_user_mention = create_user_mention(selected_user.user)
+            selected_user_member = await context.bot.get_chat_member(chat_id, existing_selection['user_id'])
+            if selected_user_member and selected_user_member.user:
+                selected_user_mention = create_user_mention(selected_user_member.user)
                 message_template = random.choice(COMMAND_MESSAGES[command])
                 final_message = message_template.format(user=selected_user_mention)
                 await update.message.reply_text(final_message, parse_mode=ParseMode.HTML)
@@ -601,6 +619,7 @@ async def ghost_command(update, context):
                 return
         except Exception as e:
             logger.warning(f"Error getting existing ghost selection: {e}")
+            # Clear invalid selection and continue
             pass
     
     # Get chat members
@@ -619,6 +638,12 @@ async def ghost_command(update, context):
         return
     
     selected_user = selected_users[0]
+    
+    # Additional null check
+    if selected_user is None:
+        await update.message.reply_text(ERROR_MESSAGES[8])
+        return
+        
     save_daily_selection(chat_id, command, selected_user.id)
     
     selected_user_mention = create_user_mention(selected_user)

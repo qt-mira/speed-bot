@@ -194,6 +194,8 @@ daily_selections = {}
 user_cooldowns = {}
 # Store active users per chat (users who have sent messages recently)
 chat_active_users = {}
+# NEW: Track users selected per day per chat (prevents same user being picked twice)
+daily_selected_users = {}
 
 # Command messages mapping
 COMMAND_MESSAGES = {
@@ -282,6 +284,18 @@ def save_daily_selection(chat_id, command, user_id, user_id_2=None):
         selection['user_id_2'] = user_id_2
     daily_selections[key] = selection
 
+def get_daily_selected_users(chat_id):
+    """Get list of users already selected today in this chat"""
+    key = f"{chat_id}_{date.today().isoformat()}"
+    return daily_selected_users.get(key, set())
+
+def add_daily_selected_user(chat_id, user_id):
+    """Add user to daily selected users list"""
+    key = f"{chat_id}_{date.today().isoformat()}"
+    if key not in daily_selected_users:
+        daily_selected_users[key] = set()
+    daily_selected_users[key].add(user_id)
+
 def select_random_users(users, count=1, exclude=None):
     """Select random users from a list"""
     if exclude is None:
@@ -291,11 +305,17 @@ def select_random_users(users, count=1, exclude=None):
         return available_users
     return random.sample(available_users, count)
 
-def select_random_users_seeded(users, count=1, seed=None, exclude=None):
-    """Select random users with a seed for consistent daily selection"""
+def select_random_users_seeded(users, count=1, seed=None, exclude=None, exclude_selected_today=None):
+    """Select random users with a seed for consistent daily selection, excluding already selected users"""
     if exclude is None:
         exclude = []
-    available_users = [user for user in users if user.id not in exclude]
+    if exclude_selected_today is None:
+        exclude_selected_today = set()
+    
+    # Combine both exclusion lists
+    all_excluded = set(exclude) | exclude_selected_today
+    
+    available_users = [user for user in users if user.id not in all_excluded]
     if len(available_users) < count:
         return available_users
     if seed:
@@ -468,9 +488,12 @@ async def handle_single_user_command(update, context, command):
         await update.message.reply_text(ERROR_MESSAGES[1])
         return
 
-    # Select random user with seed for consistency
+    # Get users already selected today in this chat
+    selected_today = get_daily_selected_users(chat_id)
+
+    # Select random user with seed for consistency, excluding already selected users
     seed = f"{chat_id}_{command}_{date.today().isoformat()}"
-    selected_users = select_random_users_seeded(members, 1, seed)
+    selected_users = select_random_users_seeded(members, 1, seed, exclude_selected_today=selected_today)
 
     if not selected_users:
         await update.message.reply_text(ERROR_MESSAGES[2])
@@ -483,7 +506,9 @@ async def handle_single_user_command(update, context, command):
         await update.message.reply_text(ERROR_MESSAGES[2])
         return
         
+    # Save selection and mark user as selected today
     save_daily_selection(chat_id, command, selected_user.id)
+    add_daily_selected_user(chat_id, selected_user.id)
 
     selected_user_mention = create_user_mention(selected_user)
     message_template = random.choice(COMMAND_MESSAGES[command])
@@ -547,9 +572,12 @@ async def handle_couple_command(update, context):
         await update.message.reply_text(ERROR_MESSAGES[4])
         return
     
-    # Select 2 random users using seeded selection for consistency
+    # Get users already selected today in this chat
+    selected_today = get_daily_selected_users(chat_id)
+    
+    # Select 2 random users using seeded selection for consistency, excluding already selected users
     seed = f"{chat_id}_{command}_{date.today().isoformat()}"
-    selected_users = select_random_users_seeded(members, 2, seed)
+    selected_users = select_random_users_seeded(members, 2, seed, exclude_selected_today=selected_today)
     
     if len(selected_users) < 2:
         await update.message.reply_text(ERROR_MESSAGES[5])
@@ -562,7 +590,10 @@ async def handle_couple_command(update, context):
         await update.message.reply_text(ERROR_MESSAGES[5])
         return
         
+    # Save selection and mark both users as selected today
     save_daily_selection(chat_id, command, user1.id, user2.id)
+    add_daily_selected_user(chat_id, user1.id)
+    add_daily_selected_user(chat_id, user2.id)
     
     user1_mention = create_user_mention(user1)
     user2_mention = create_user_mention(user2)
@@ -629,9 +660,12 @@ async def ghost_command(update, context):
         await update.message.reply_text(ERROR_MESSAGES[7])
         return
     
-    # Select random user using seeded selection for consistency
+    # Get users already selected today in this chat
+    selected_today = get_daily_selected_users(chat_id)
+    
+    # Select random user using seeded selection for consistency, excluding already selected users
     seed = f"{chat_id}_{command}_{date.today().isoformat()}"
-    selected_users = select_random_users_seeded(members, 1, seed)
+    selected_users = select_random_users_seeded(members, 1, seed, exclude_selected_today=selected_today)
     
     if not selected_users:
         await update.message.reply_text(ERROR_MESSAGES[8])
@@ -644,7 +678,9 @@ async def ghost_command(update, context):
         await update.message.reply_text(ERROR_MESSAGES[8])
         return
         
+    # Save selection and mark user as selected today
     save_daily_selection(chat_id, command, selected_user.id)
+    add_daily_selected_user(chat_id, selected_user.id)
     
     selected_user_mention = create_user_mention(selected_user)
     message_template = random.choice(COMMAND_MESSAGES[command])
